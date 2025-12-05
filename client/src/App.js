@@ -18,6 +18,7 @@ import SellerProducts from './pages/seller/Products';
 import SellerOrders from './pages/seller/Orders';
 import SellerRedirect from './pages/seller/SellerRedirect';
 import ProductForm from './pages/seller/ProductForm';
+import NotFound from './pages/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 import './App.css';
 
@@ -101,6 +102,7 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
             <Footer />
