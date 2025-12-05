@@ -69,20 +69,38 @@ npm start
 
 ## Deployment
 
-### Vercel (Full Stack)
+### Vercel (Separate Frontend and Backend)
 
-The application is configured for Vercel deployment with serverless functions. Set the following environment variables in Vercel:
+Deploy the frontend and backend as **two separate Vercel projects**:
 
-**Required Environment Variables:**
-- `MONGODB_URI`: Your MongoDB connection string
-- `JWT_SECRET`: Secret key for JWT tokens
-- `STRIPE_SECRET_KEY`: Your Stripe secret key
-- `REACT_APP_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
+#### 1. Backend Deployment
 
-**Optional:**
-- `REACT_APP_API_URL`: Only needed if deploying backend separately (leave empty for Vercel serverless functions)
+1. Create a new Vercel project
+2. Connect your GitHub repository
+3. **Root Directory**: Set to `server`
+4. **Framework Preset**: Other (or Node.js)
+5. **Build Command**: Leave empty or `echo 'No build needed'`
+6. **Output Directory**: Leave empty or `.`
+7. **Environment Variables**:
+   - `MONGODB_URI`: Your MongoDB connection string
+   - `JWT_SECRET`: Secret key for JWT tokens
+   - `STRIPE_SECRET_KEY`: Your Stripe secret key
 
-The API routes are automatically available at `/api/*` when deployed on Vercel.
+The backend will be available at `https://your-backend-name.vercel.app`
+
+#### 2. Frontend Deployment
+
+1. Create a new Vercel project
+2. Connect your GitHub repository
+3. **Root Directory**: Set to `client`
+4. **Framework Preset**: Create React App
+5. **Build Command**: `npm install && npm run build`
+6. **Output Directory**: `build`
+7. **Environment Variables**:
+   - `REACT_APP_API_URL`: Your backend URL (e.g., `https://your-backend-name.vercel.app`)
+   - `REACT_APP_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
+
+The frontend will automatically use the backend URL from `REACT_APP_API_URL`.
 
 ## License
 
