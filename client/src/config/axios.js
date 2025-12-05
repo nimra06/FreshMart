@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // Get API base URL from environment variable
 // In development, this will be empty (uses proxy from package.json)
-// In production, set REACT_APP_API_URL to your backend URL (e.g., https://your-backend.railway.app)
+// In production on Vercel, API is on same domain, so empty string works
+// For separate backend deployment, set REACT_APP_API_URL to your backend URL
 const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
 // Create axios instance with base URL
