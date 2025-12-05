@@ -11,9 +11,6 @@ import orderRoutes from '../server/routes/orders.js';
 import sellerRoutes from '../server/routes/seller.js';
 import paymentRoutes from '../server/routes/payment.js';
 
-// Export for Vercel serverless
-export default app;
-
 const app = express();
 
 // Middleware
