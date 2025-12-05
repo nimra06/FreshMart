@@ -6,7 +6,12 @@ export default async function handler(req, res) {
   await connectDB();
   
   const { method } = req;
-  const slug = req.query.slug || [];
+  // Handle slug - it can be an array or a string
+  let slug = req.query.slug;
+  if (!slug) slug = [];
+  if (typeof slug === 'string') slug = [slug];
+  if (!Array.isArray(slug)) slug = [];
+  
   const route = slug[0] || '';
 
   try {
@@ -95,7 +100,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    res.status(404).json({ message: 'Route not found' });
+    res.status(405).json({ message: `Method ${method} not allowed for route: ${route || 'root'}` });
   } catch (error) {
     if (error.message.includes('Not authorized')) {
       return res.status(401).json({ message: error.message });

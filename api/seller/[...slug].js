@@ -7,7 +7,12 @@ export default async function handler(req, res) {
   await connectDB();
   
   const { method, query } = req;
-  const slug = req.query.slug || [];
+  // Handle slug - it can be an array or a string
+  let slug = req.query.slug;
+  if (!slug) slug = [];
+  if (typeof slug === 'string') slug = [slug];
+  if (!Array.isArray(slug)) slug = [];
+  
   const route = slug[0] || '';
   const subRoute = slug[1] || '';
   const id = slug[2] || '';
