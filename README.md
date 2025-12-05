@@ -69,16 +69,20 @@ npm start
 
 ## Deployment
 
-### Frontend (Vercel)
+### Vercel (Full Stack)
 
-The frontend is configured for Vercel deployment. Set the following environment variables in Vercel:
+The application is configured for Vercel deployment with serverless functions. Set the following environment variables in Vercel:
 
-- `REACT_APP_API_URL`: Your backend API URL
+**Required Environment Variables:**
+- `MONGODB_URI`: Your MongoDB connection string
+- `JWT_SECRET`: Secret key for JWT tokens
+- `STRIPE_SECRET_KEY`: Your Stripe secret key
 - `REACT_APP_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
 
-### Backend
+**Optional:**
+- `REACT_APP_API_URL`: Only needed if deploying backend separately (leave empty for Vercel serverless functions)
 
-Deploy the backend to a service like Railway, Render, or Heroku. Make sure to set all environment variables.
+The API routes are automatically available at `/api/*` when deployed on Vercel.
 
 ## License
 
