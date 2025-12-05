@@ -63,6 +63,7 @@ async function connectDB() {
 }
 
 // Vercel serverless function handler
+// This catch-all route handles all /api/* requests
 export default async function handler(req, res) {
   // Connect to MongoDB
   try {
@@ -73,6 +74,7 @@ export default async function handler(req, res) {
   }
 
   // Handle the request with Express
+  // Express will route based on the path (e.g., /api/auth/login)
   return app(req, res);
 }
 
