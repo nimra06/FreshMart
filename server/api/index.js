@@ -1,3 +1,4 @@
+// Load environment variables (dotenv is not needed in Vercel, but helps for local dev)
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -75,6 +76,15 @@ async function connectDB() {
 
 // Vercel serverless function handler
 export default async function handler(req, res) {
+  // Debug: Log environment variable status (without exposing the actual URI)
+  console.log('Environment check:', {
+    hasMongoDBUri: !!process.env.MONGODB_URI,
+    mongoDBUriLength: process.env.MONGODB_URI?.length || 0,
+    mongoDBUriStarts: process.env.MONGODB_URI?.substring(0, 10) || 'not set',
+    hasJwtSecret: !!process.env.JWT_SECRET,
+    hasStripeKey: !!process.env.STRIPE_SECRET_KEY,
+  });
+
   // Connect to MongoDB
   try {
     await connectDB();
@@ -83,12 +93,25 @@ export default async function handler(req, res) {
     console.error('Error details:', {
       message: error.message,
       name: error.name,
+      code: error.code,
       hasMongoDBUri: !!process.env.MONGODB_URI,
       mongoDBUriLength: process.env.MONGODB_URI?.length || 0,
     });
+    
+    // Return more helpful error message
+    let errorMessage = 'Database connection failed';
+    if (!process.env.MONGODB_URI) {
+      errorMessage = 'MONGODB_URI environment variable is not set';
+    } else if (error.message.includes('authentication')) {
+      errorMessage = 'MongoDB authentication failed. Check your username and password.';
+    } else if (error.message.includes('timeout') || error.message.includes('ECONNREFUSED')) {
+      errorMessage = 'Cannot reach MongoDB. Check network access settings in MongoDB Atlas.';
+    }
+    
     return res.status(500).json({ 
-      message: 'Database connection failed',
-      error: process.env.NODE_ENV === 'development' ? error.message : 'Check server logs'
+      message: errorMessage,
+      error: error.message,
+      hint: !process.env.MONGODB_URI ? 'Set MONGODB_URI in Vercel environment variables' : 'Check MongoDB Atlas network access settings'
     });
   }
 
