@@ -12,7 +12,13 @@ export default async function handler(req, res) {
   if (typeof slug === 'string') slug = [slug];
   if (!Array.isArray(slug)) slug = [];
   
-  const route = slug[0] || '';
+  // Fallback: extract route from URL if slug is empty
+  let route = slug[0] || '';
+  if (!route && req.url) {
+    const urlPath = req.url.split('?')[0];
+    const match = urlPath.match(/\/api\/auth\/(.+)$/);
+    if (match) route = match[1];
+  }
 
   try {
     // Register
