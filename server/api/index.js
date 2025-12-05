@@ -47,9 +47,20 @@ async function connectDB() {
       throw new Error('MONGODB_URI is not defined in environment variables');
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    // Validate MongoDB URI format
+    if (!MONGODB_URI.startsWith('mongodb://') && !MONGODB_URI.startsWith('mongodb+srv://')) {
+      throw new Error('Invalid MONGODB_URI format. Must start with mongodb:// or mongodb+srv://');
+    }
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts)
+      .then((mongoose) => {
+        console.log('✅ MongoDB connected successfully');
+        return mongoose;
+      })
+      .catch((error) => {
+        console.error('❌ MongoDB connection failed:', error.message);
+        throw error;
+      });
   }
 
   try {
