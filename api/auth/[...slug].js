@@ -1,16 +1,17 @@
-import connectDB from './lib/db.js';
-import User from '../server/models/User.js';
-import { generateToken, protect } from './lib/auth.js';
+import connectDB from '../lib/db.js';
+import User from '../../server/models/User.js';
+import { generateToken, protect } from '../lib/auth.js';
 
 export default async function handler(req, res) {
   await connectDB();
   
-  const { method, url } = req;
-  const path = url.split('?')[0]; // Remove query params
+  const { method } = req;
+  const slug = req.query.slug || [];
+  const route = slug[0] || '';
 
   try {
     // Register
-    if (method === 'POST' && path === '/api/auth/register') {
+    if (method === 'POST' && route === 'register') {
       const { name, email, password, phone } = req.body;
 
       if (!name || !email || !password) {
@@ -45,7 +46,7 @@ export default async function handler(req, res) {
     }
 
     // Login
-    if (method === 'POST' && path === '/api/auth/login') {
+    if (method === 'POST' && route === 'login') {
       const { email, password } = req.body;
 
       const user = await User.findOne({ email });
@@ -65,7 +66,7 @@ export default async function handler(req, res) {
     }
 
     // Get current user
-    if (method === 'GET' && path === '/api/auth/me') {
+    if (method === 'GET' && route === 'me') {
       const user = await protect(req);
       const userData = await User.findById(user._id).select('-password');
       res.json(userData);
@@ -73,7 +74,7 @@ export default async function handler(req, res) {
     }
 
     // Update profile
-    if (method === 'PUT' && path === '/api/auth/profile') {
+    if (method === 'PUT' && route === 'profile') {
       const user = await protect(req);
 
       const updatedUser = await User.findByIdAndUpdate(
@@ -94,7 +95,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    res.status(405).json({ message: 'Method not allowed' });
+    res.status(404).json({ message: 'Route not found' });
   } catch (error) {
     if (error.message.includes('Not authorized')) {
       return res.status(401).json({ message: error.message });

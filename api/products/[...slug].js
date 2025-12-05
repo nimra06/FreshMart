@@ -1,15 +1,16 @@
-import connectDB from './lib/db.js';
-import Product from '../server/models/Product.js';
+import connectDB from '../lib/db.js';
+import Product from '../../server/models/Product.js';
 
 export default async function handler(req, res) {
   await connectDB();
   
-  const { method, url, query } = req;
-  const path = url.split('?')[0];
+  const { method, query } = req;
+  const slug = req.query.slug || [];
+  const id = slug[0];
 
   try {
     // Get all products
-    if (method === 'GET' && path === '/api/products') {
+    if (method === 'GET' && !id) {
       const {
         category,
         search,
@@ -60,8 +61,7 @@ export default async function handler(req, res) {
     }
 
     // Get single product
-    if (method === 'GET' && path.startsWith('/api/products/')) {
-      const id = path.split('/api/products/')[1];
+    if (method === 'GET' && id) {
       const product = await Product.findById(id).populate(
         'seller',
         'name email'

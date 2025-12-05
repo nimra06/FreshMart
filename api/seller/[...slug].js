@@ -1,20 +1,23 @@
-import connectDB from './lib/db.js';
-import Product from '../server/models/Product.js';
-import Order from '../server/models/Order.js';
-import { protect, seller } from './lib/auth.js';
+import connectDB from '../lib/db.js';
+import Product from '../../server/models/Product.js';
+import Order from '../../server/models/Order.js';
+import { protect, seller } from '../lib/auth.js';
 
 export default async function handler(req, res) {
   await connectDB();
   
-  const { method, url, query } = req;
-  const path = url.split('?')[0];
+  const { method, query } = req;
+  const slug = req.query.slug || [];
+  const route = slug[0] || '';
+  const subRoute = slug[1] || '';
+  const id = slug[2] || '';
 
   try {
     const user = await protect(req);
     seller(user);
 
-    // Get seller products
-    if (method === 'GET' && path === '/api/seller/products') {
+    // Get seller products: /api/seller/products
+    if (method === 'GET' && route === 'products' && !subRoute) {
       const products = await Product.find({ seller: user._id }).sort({
         createdAt: -1,
       });
@@ -22,8 +25,8 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Create product
-    if (method === 'POST' && path === '/api/seller/products') {
+    // Create product: /api/seller/products
+    if (method === 'POST' && route === 'products') {
       const product = await Product.create({
         ...req.body,
         seller: user._id,
@@ -32,10 +35,10 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Update or delete product
-    if ((method === 'PUT' || method === 'DELETE') && path.startsWith('/api/seller/products/')) {
-      const id = path.split('/api/seller/products/')[1];
-      const product = await Product.findById(id);
+    // Update or delete product: /api/seller/products/[id]
+    if ((method === 'PUT' || method === 'DELETE') && route === 'products' && subRoute && !id) {
+      const productId = subRoute;
+      const product = await Product.findById(productId);
 
       if (!product) {
         return res.status(404).json({ message: 'Product not found' });
@@ -47,7 +50,7 @@ export default async function handler(req, res) {
 
       if (method === 'PUT') {
         const updatedProduct = await Product.findByIdAndUpdate(
-          id,
+          productId,
           req.body,
           {
             new: true,
@@ -56,14 +59,14 @@ export default async function handler(req, res) {
         );
         res.json(updatedProduct);
       } else {
-        await Product.findByIdAndDelete(id);
+        await Product.findByIdAndDelete(productId);
         res.json({ message: 'Product deleted' });
       }
       return;
     }
 
-    // Get seller orders
-    if (method === 'GET' && path === '/api/seller/orders') {
+    // Get seller orders: /api/seller/orders
+    if (method === 'GET' && route === 'orders') {
       const sellerProducts = await Product.find({ seller: user._id });
       const productIds = sellerProducts.map((p) => p._id);
 
@@ -78,8 +81,8 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Get seller dashboard
-    if (method === 'GET' && path === '/api/seller/dashboard') {
+    // Get seller dashboard: /api/seller/dashboard
+    if (method === 'GET' && route === 'dashboard') {
       const sellerProducts = await Product.find({ seller: user._id });
       const productIds = sellerProducts.map((p) => p._id);
 
@@ -112,7 +115,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    res.status(405).json({ message: 'Method not allowed' });
+    res.status(404).json({ message: 'Route not found' });
   } catch (error) {
     if (error.message.includes('Not authorized') || error.message.includes('Access denied')) {
       return res.status(error.message.includes('Not authorized') ? 401 : 403).json({ message: error.message });

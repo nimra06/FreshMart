@@ -1,6 +1,6 @@
-import connectDB from './lib/db.js';
+import connectDB from '../lib/db.js';
 import Stripe from 'stripe';
-import { protect } from './lib/auth.js';
+import { protect } from '../lib/auth.js';
 
 let stripe = null;
 
@@ -24,12 +24,13 @@ const getStripe = () => {
 export default async function handler(req, res) {
   await connectDB();
   
-  const { method, url } = req;
-  const path = url.split('?')[0];
+  const { method } = req;
+  const slug = req.query.slug || [];
+  const route = slug[0] || '';
 
   try {
     // Create payment intent
-    if (method === 'POST' && path === '/api/payment/create-payment-intent') {
+    if (method === 'POST' && route === 'create-payment-intent') {
       const user = await protect(req);
 
       const stripeInstance = getStripe();

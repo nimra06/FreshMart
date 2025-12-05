@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import api from '../config/axios';
-import { useApp } from '../context/AppContext';
 import './Orders.css';
 
 const Orders = () => {

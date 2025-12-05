@@ -1,17 +1,18 @@
-import connectDB from './lib/db.js';
-import Order from '../server/models/Order.js';
-import Product from '../server/models/Product.js';
-import { protect, client } from './lib/auth.js';
+import connectDB from '../lib/db.js';
+import Order from '../../server/models/Order.js';
+import Product from '../../server/models/Product.js';
+import { protect, client } from '../lib/auth.js';
 
 export default async function handler(req, res) {
   await connectDB();
   
-  const { method, url, query } = req;
-  const path = url.split('?')[0];
+  const { method, query } = req;
+  const slug = req.query.slug || [];
+  const route = slug[0] || '';
 
   try {
     // Create order
-    if (method === 'POST' && path === '/api/orders') {
+    if (method === 'POST' && !route) {
       const user = await protect(req);
       client(user);
 
@@ -59,7 +60,7 @@ export default async function handler(req, res) {
     }
 
     // Get user orders
-    if (method === 'GET' && path === '/api/orders/myorders') {
+    if (method === 'GET' && route === 'myorders') {
       const user = await protect(req);
 
       const orders = await Order.find({ user: user._id })
@@ -70,10 +71,10 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Update order status
-    if (method === 'PUT' && path.includes('/api/orders/') && path.includes('/status')) {
+    // Update order status: /api/orders/[id]/status
+    if (method === 'PUT' && slug.length === 2 && slug[1] === 'status') {
       const user = await protect(req);
-      const id = path.split('/api/orders/')[1].split('/status')[0];
+      const id = slug[0];
       const { status } = req.body;
 
       const order = await Order.findById(id);
