@@ -69,7 +69,16 @@ export default async function handler(req, res) {
     await connectDB();
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    return res.status(500).json({ message: 'Database connection failed' });
+    console.error('Error details:', {
+      message: error.message,
+      name: error.name,
+      hasMongoDBUri: !!process.env.MONGODB_URI,
+      mongoDBUriLength: process.env.MONGODB_URI?.length || 0,
+    });
+    return res.status(500).json({ 
+      message: 'Database connection failed',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Check server logs'
+    });
   }
 
   // Handle the request with Express
