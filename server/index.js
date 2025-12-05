@@ -45,13 +45,7 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 
-// Export for Vercel serverless functions
-export default app;
-
-// Only listen in development or when not in Vercel
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 

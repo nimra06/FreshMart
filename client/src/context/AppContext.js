@@ -1,12 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import axios from 'axios';
 
-// Configure axios base URL for production
-const API_URL = process.env.REACT_APP_API_URL || '';
-if (API_URL) {
-  axios.defaults.baseURL = API_URL;
-}
-
 const AppContext = createContext();
 
 const initialState = {
