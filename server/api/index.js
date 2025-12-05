@@ -18,6 +18,21 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Root route - API status
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'FreshMart API is running',
+    version: '1.0.0',
+    endpoints: {
+      auth: '/api/auth',
+      products: '/api/products',
+      orders: '/api/orders',
+      seller: '/api/seller',
+      payment: '/api/payment'
+    }
+  });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
