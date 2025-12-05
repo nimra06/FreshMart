@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../config/axios';
 import { useApp } from '../../context/AppContext';
 import { useToast } from '../../context/ToastContext';
 import './Seller.css';
@@ -16,7 +16,7 @@ const SellerOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('/api/seller/orders');
+      const res = await api.get('/api/seller/orders');
       setOrders(res.data);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -27,7 +27,7 @@ const SellerOrders = () => {
 
   const updateOrderStatus = async (orderId, status) => {
     try {
-      await axios.put(`/api/orders/${orderId}/status`, { status });
+      await api.put(`/api/orders/${orderId}/status`, { status });
       success(`Order status updated to ${status}`);
       fetchOrders();
     } catch (error) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 import './Seller.css';
 
 const SellerDashboard = () => {
@@ -13,7 +13,7 @@ const SellerDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get('/api/seller/dashboard');
+      const res = await api.get('/api/seller/dashboard');
       setStats(res.data);
     } catch (error) {
       console.error('Error fetching stats:', error);

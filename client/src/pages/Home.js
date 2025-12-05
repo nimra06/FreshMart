@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../config/axios';
 import './Home.css';
 
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('/api/products?limit=8');
+      const res = await api.get('/api/products?limit=8');
       // Handle different response structures
       const productsData = res.data.products || res.data || [];
       setProducts(Array.isArray(productsData) ? productsData : []);

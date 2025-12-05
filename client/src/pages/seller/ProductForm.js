@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 import { useToast } from '../../context/ToastContext';
 import './Seller.css';
 import './ProductForm.css';
@@ -32,7 +32,7 @@ const ProductForm = () => {
 
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(`/api/seller/products`);
+      const res = await api.get(`/api/seller/products`);
       const product = res.data.find((p) => p._id === id);
       if (product) {
         setFormData({
@@ -77,10 +77,10 @@ const ProductForm = () => {
       };
 
       if (isEditMode) {
-        await axios.put(`/api/seller/products/${id}`, productData);
+        await api.put(`/api/seller/products/${id}`, productData);
         success('Product updated successfully!');
       } else {
-        await axios.post('/api/seller/products', productData);
+        await api.post('/api/seller/products', productData);
         success('Product added successfully!');
       }
 

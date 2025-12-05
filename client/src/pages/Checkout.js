@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../config/axios';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../context/ToastContext';
 import StripeWrapper from '../components/StripeWrapper';
@@ -48,7 +48,7 @@ const CheckoutForm = ({ clientSecret, setClientSecret }) => {
     try {
       setStripeError(null);
       setIsLoadingPaymentIntent(true);
-      const res = await axios.post('/api/payment/create-payment-intent', {
+      const res = await api.post('/api/payment/create-payment-intent', {
         amount: getCartTotal(),
         currency: 'usd',
       });
@@ -151,7 +151,7 @@ const CheckoutForm = ({ clientSecret, setClientSecret }) => {
         stripePaymentIntentId,
       };
 
-      await axios.post('/api/orders', orderData);
+      await api.post('/api/orders', orderData);
       clearCart();
       success('Order placed successfully!');
       navigate('/orders');

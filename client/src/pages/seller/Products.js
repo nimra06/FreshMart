@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 import { useToast } from '../../context/ToastContext';
 import './Seller.css';
 
@@ -16,7 +16,7 @@ const SellerProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('/api/seller/products');
+      const res = await api.get('/api/seller/products');
       setProducts(res.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -28,7 +28,7 @@ const SellerProducts = () => {
   const handleDelete = async (productId) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await axios.delete(`/api/seller/products/${productId}`);
+        await api.delete(`/api/seller/products/${productId}`);
         success('Product deleted successfully');
         fetchProducts();
       } catch (error) {
@@ -102,7 +102,7 @@ const SellerProducts = () => {
                           onChange={async (e) => {
                             const newStock = parseInt(e.target.value) || 0;
                             try {
-                              await axios.put(`/api/seller/products/${product._id}`, {
+                              await api.put(`/api/seller/products/${product._id}`, {
                                 ...product,
                                 stock: newStock,
                               });

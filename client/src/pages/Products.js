@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../config/axios';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../context/ToastContext';
 import './Products.css';
@@ -34,7 +34,7 @@ const Products = () => {
         limit: 12,
       });
 
-      const res = await axios.get(`/api/products?${params}`);
+      const res = await api.get(`/api/products?${params}`);
       setProducts(res.data.products);
       setTotalPages(res.data.totalPages);
     } catch (error) {

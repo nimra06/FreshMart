@@ -1,75 +1,84 @@
-# FreshMart
+# FreshMart - Grocery Shopping Application
 
-A full-stack grocery e-commerce application built with the MERN stack, featuring customer shopping experience and seller dashboard.
-
-## Tech Stack
-
-- **Frontend**: React, React Router, Context API
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB with Mongoose
-- **Payment**: Stripe Integration
-- **Authentication**: JWT
+A full-stack grocery shopping application built with MERN stack (MongoDB, Express.js, React, Node.js).
 
 ## Features
 
-- User authentication and authorization
-- Product browsing, search, and filtering
-- Shopping cart and checkout
-- Stripe payment processing
-- Order management
-- Seller dashboard with product and order management
-- Real-time stock management
+- **Client Side**: Browse products, add to cart, checkout with Stripe payments
+- **Seller Side**: Manage products, view orders, update stock
+- **Authentication**: JWT-based authentication
+- **Payments**: Stripe integration for card payments
+- **Toast Notifications**: User-friendly notifications
 
-## Quick Start
+## Tech Stack
 
-### Prerequisites
-- Node.js (v14+)
-- MongoDB Atlas account
-- Stripe account (for payments)
+- **Frontend**: React, React Router, Axios, Stripe Elements
+- **Backend**: Node.js, Express.js, Mongoose
+- **Database**: MongoDB
+- **Payment**: Stripe
 
-### Installation
+## Setup
 
+### Backend Setup
+
+1. Navigate to server directory:
 ```bash
-# Install dependencies
-npm install
-cd server && npm install
-cd ../client && npm install
+cd server
+```
 
-# Set up environment variables
-# server/.env
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create `.env` file:
+```
+PORT=5001
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 STRIPE_SECRET_KEY=your_stripe_secret_key
-PORT=5001
-
-# client/.env
-REACT_APP_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 ```
 
-### Run Development Server
-
+4. Start the server:
 ```bash
-# From root directory
 npm run dev
 ```
 
-Server runs on `http://localhost:5001`  
-Client runs on `http://localhost:3000`
+### Frontend Setup
 
-## Project Structure
-
-```
-├── client/          # React frontend
-├── server/          # Express backend
-│   ├── models/      # Mongoose models
-│   ├── routes/      # API routes
-│   └── middleware/  # Auth middleware
-└── package.json
+1. Navigate to client directory:
+```bash
+cd client
 ```
 
-## Environment Variables
+2. Install dependencies:
+```bash
+npm install
+```
 
-See `.env.example` files in `server/` and `client/` directories for required environment variables.
+3. Create `.env` file for production:
+```
+REACT_APP_API_URL=https://your-backend-url.com
+REACT_APP_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+```
+
+4. Start the development server:
+```bash
+npm start
+```
+
+## Deployment
+
+### Frontend (Vercel)
+
+The frontend is configured for Vercel deployment. Set the following environment variables in Vercel:
+
+- `REACT_APP_API_URL`: Your backend API URL
+- `REACT_APP_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
+
+### Backend
+
+Deploy the backend to a service like Railway, Render, or Heroku. Make sure to set all environment variables.
 
 ## License
 

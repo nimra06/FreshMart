@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/axios';
 
 const AppContext = createContext();
 
@@ -75,11 +75,10 @@ const appReducer = (state, action) => {
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  // Set up axios defaults
+  // Load user on mount if token exists
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       loadUser();
     }
   }, []);
@@ -90,11 +89,10 @@ export const AppProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const res = await axios.get('/api/auth/me');
+      const res = await api.get('/api/auth/me');
       dispatch({ type: 'USER_LOADED', payload: res.data });
     } catch (error) {
       localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
     }
   };
 
@@ -102,10 +100,10 @@ export const AppProvider = ({ children }) => {
   const register = async (formData) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const res = await axios.post('/api/auth/register', formData);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+      const res = await api.post('/api/auth/register', formData);
+      localStorage.setItem('token', res.data.token);
       // Load full user profile after registration
-      const userRes = await axios.get('/api/auth/me');
+      const userRes = await api.get('/api/auth/me');
       dispatch({ type: 'LOGIN_SUCCESS', payload: { ...res.data, ...userRes.data } });
       return { success: true };
     } catch (error) {
@@ -121,10 +119,10 @@ export const AppProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const res = await axios.post('/api/auth/login', { email, password });
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+      const res = await api.post('/api/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
       // Load full user profile after login
-      const userRes = await axios.get('/api/auth/me');
+      const userRes = await api.get('/api/auth/me');
       dispatch({ type: 'LOGIN_SUCCESS', payload: { ...res.data, ...userRes.data } });
       return { success: true };
     } catch (error) {
@@ -139,7 +137,6 @@ export const AppProvider = ({ children }) => {
   // Logout
   const logout = () => {
     dispatch({ type: 'LOGOUT' });
-    delete axios.defaults.headers.common['Authorization'];
   };
 
   // Add to cart

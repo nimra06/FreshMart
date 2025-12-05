@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../config/axios';
 import { useApp } from '../context/AppContext';
 import './Orders.css';
 
@@ -13,7 +13,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('/api/orders/myorders');
+      const res = await api.get('/api/orders/myorders');
       setOrders(res.data);
     } catch (error) {
       console.error('Error fetching orders:', error);

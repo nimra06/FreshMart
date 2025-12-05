@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/axios';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../context/ToastContext';
 import './Profile.css';
@@ -46,7 +46,7 @@ const Profile = () => {
     setMessage('');
 
     try {
-      await axios.put('/api/auth/profile', {
+      await api.put('/api/auth/profile', {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
