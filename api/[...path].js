@@ -73,8 +73,25 @@ export default async function handler(req, res) {
     return res.status(500).json({ message: 'Database connection failed' });
   }
 
+  // Reconstruct the full URL path for Express
+  // Vercel's catch-all route: /api/[...path] means /api/auth/login becomes path=['auth', 'login']
+  const pathSegments = req.query.path || [];
+  const path = Array.isArray(pathSegments) ? pathSegments.join('/') : pathSegments;
+  
+  // Update req.url to include /api prefix so Express routes match
+  const originalUrl = req.url;
+  req.url = `/api/${path}${req.url.includes('?') ? '?' + req.url.split('?')[1] : ''}`;
+  
   // Handle the request with Express
-  // Express will route based on the path (e.g., /api/auth/login)
-  return app(req, res);
+  return new Promise((resolve) => {
+    app(req, res, () => {
+      // If Express didn't handle it, restore original URL and return 404
+      if (!res.headersSent) {
+        req.url = originalUrl;
+        res.status(404).json({ message: 'Route not found' });
+      }
+      resolve();
+    });
+  });
 }
 
