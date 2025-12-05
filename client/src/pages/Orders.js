@@ -4,7 +4,6 @@ import { useApp } from '../context/AppContext';
 import './Orders.css';
 
 const Orders = () => {
-  const { user } = useApp();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 

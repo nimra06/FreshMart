@@ -28,7 +28,6 @@ const CheckoutForm = ({ clientSecret, setClientSecret }) => {
     phone: user?.phone || '',
     paymentMethod: 'Cash on Delivery',
   });
-  const [paymentIntentId, setPaymentIntentId] = useState(null);
   const [stripeError, setStripeError] = useState(null);
   const [isLoadingPaymentIntent, setIsLoadingPaymentIntent] = useState(false);
 
@@ -56,7 +55,6 @@ const CheckoutForm = ({ clientSecret, setClientSecret }) => {
       if (setClientSecret) {
         setClientSecret(res.data.clientSecret);
       }
-      setPaymentIntentId(res.data.paymentIntentId);
     } catch (error) {
       console.error('Error creating payment intent:', error);
       if (error.response?.status === 503) {

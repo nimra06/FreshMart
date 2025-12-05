@@ -38,17 +38,6 @@ const SellerProducts = () => {
     }
   };
 
-  const handleToggleActive = async (product) => {
-    try {
-      await axios.put(`/api/seller/products/${product._id}`, {
-        ...product,
-        isActive: !product.isActive,
-      });
-      fetchProducts();
-    } catch (error) {
-      console.error('Error updating product:', error);
-    }
-  };
 
   if (loading) {
     return <div className="loading">Loading products...</div>;

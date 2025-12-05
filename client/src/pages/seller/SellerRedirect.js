@@ -25,3 +25,5 @@ const SellerRedirect = () => {
 
 export default SellerRedirect;
 
+
+

@@ -47,9 +47,9 @@ const Footer = () => {
           <div className="footer-section">
             <h4>Follow Us</h4>
             <div className="social-links">
-              <a href="#" aria-label="Facebook">Facebook</a>
-              <a href="#" aria-label="Twitter">Twitter</a>
-              <a href="#" aria-label="Instagram">Instagram</a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">Facebook</a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">Twitter</a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
             </div>
           </div>
         </div>
@@ -63,4 +63,6 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
 
