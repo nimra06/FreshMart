@@ -14,9 +14,12 @@ const Home = () => {
   const fetchProducts = async () => {
     try {
       const res = await axios.get('/api/products?limit=8');
-      setProducts(res.data.products);
+      // Handle different response structures
+      const productsData = res.data.products || res.data || [];
+      setProducts(Array.isArray(productsData) ? productsData : []);
     } catch (error) {
       console.error('Error fetching products:', error);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
@@ -76,7 +79,7 @@ const Home = () => {
           <h2>Featured Products</h2>
           {loading ? (
             <div className="loading">Loading products...</div>
-          ) : (
+          ) : products && products.length > 0 ? (
             <div className="products-grid">
               {products.map((product) => (
                 <Link
@@ -102,6 +105,10 @@ const Home = () => {
                   </div>
                 </Link>
               ))}
+            </div>
+          ) : (
+            <div className="no-products">
+              <p>No featured products available at the moment.</p>
             </div>
           )}
           <div className="view-all">
