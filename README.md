@@ -19,7 +19,7 @@ A full-stack grocery shopping application built with MERN stack (MongoDB, Expres
 
 ## Live Demo
 
-🌐 **Live Application**: [https://fresh-mart-client-gqs8bxjud-nimras-projects-72d9dc2f.vercel.app/](https://fresh-mart-client-gqs8bxjud-nimras-projects-72d9dc2f.vercel.app/)
+🌐 **Live Application**: https://fresh-mart-client-seven.vercel.app/
 
 ## License
 
