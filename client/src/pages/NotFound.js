@@ -1,16 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './NotFound.css';
 
 const NotFound = () => {
   return (
-    <div className="not-found-page">
+    <div className="min-h-screen flex items-center justify-center py-20">
       <div className="container">
-        <div className="not-found-content">
-          <h1>404</h1>
-          <h2>Page Not Found</h2>
-          <p>The page you're looking for doesn't exist.</p>
-          <div className="not-found-actions">
+        <div className="text-center">
+          <h1 className="text-8xl font-bold text-[#667eea] mb-4">404</h1>
+          <h2 className="text-4xl mb-4 text-gray-800">Page Not Found</h2>
+          <p className="text-lg text-gray-600 mb-8">The page you're looking for doesn't exist.</p>
+          <div className="flex gap-5 justify-center flex-wrap">
             <Link to="/" className="btn btn-primary">
               Go Home
             </Link>
@@ -25,6 +24,7 @@ const NotFound = () => {
 };
 
 export default NotFound;
+
 
 
 

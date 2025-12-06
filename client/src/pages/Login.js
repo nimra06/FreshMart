@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../context/ToastContext';
-import './Auth.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -41,11 +40,11 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-card">
-          <h2>Login to FreshMart</h2>
-          <p>Welcome back! Please login to your account.</p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#667eea] to-[#764ba2] py-10 px-5">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-xl p-10 shadow-2xl">
+          <h2 className="text-3xl mb-2.5 text-gray-800 text-center">Login to FreshMart</h2>
+          <p className="text-center text-gray-600 mb-8">Welcome back! Please login to your account.</p>
 
           {error && <div className="error">{error}</div>}
 
@@ -76,13 +75,13 @@ const Login = () => {
               />
             </div>
 
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary w-full py-4 text-lg mt-2.5">
               Login
             </button>
           </form>
 
-          <p className="auth-footer">
-            Don't have an account? <Link to="/register">Sign up here</Link>
+          <p className="text-center mt-5 text-gray-600">
+            Don't have an account? <Link to="/register" className="text-[#667eea] font-semibold">Sign up here</Link>
           </p>
         </div>
       </div>

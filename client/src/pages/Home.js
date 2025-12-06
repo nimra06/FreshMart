@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../config/axios';
-import './Home.css';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -35,14 +34,14 @@ const Home = () => {
   ];
 
   return (
-    <div className="home">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="hero">
+      <section className="bg-gradient-to-r from-[#667eea] to-[#764ba2] text-white py-20 text-center">
         <div className="container">
-          <div className="hero-content">
-            <h1>Fresh Groceries, Delivered to Your Door</h1>
-            <p>Quality products at unbeatable prices. Shop now and experience the convenience!</p>
-            <div className="hero-buttons">
+          <div>
+            <h1 className="text-5xl mb-5 font-bold">Fresh Groceries, Delivered to Your Door</h1>
+            <p className="text-xl mb-8 opacity-90">Quality products at unbeatable prices. Shop now and experience the convenience!</p>
+            <div className="flex gap-5 justify-center flex-wrap">
               <Link to="/products" className="btn btn-primary">
                 Shop Now
               </Link>
@@ -55,18 +54,18 @@ const Home = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="categories" id="categories">
+      <section className="py-16 bg-white" id="categories">
         <div className="container">
-          <h2>Shop by Category</h2>
-          <div className="categories-grid">
+          <h2 className="text-center text-4xl mb-10 text-gray-800">Shop by Category</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
             {categories.map((category) => (
               <Link
                 key={category.name}
                 to={`/products?category=${category.name}`}
-                className="category-card"
+                className="bg-white border-2 border-gray-200 rounded-xl p-8 text-center transition-all duration-300 cursor-pointer hover:border-[#667eea] hover:-translate-y-1 hover:shadow-lg hover:shadow-[#667eea]/20"
               >
-                <div className="category-icon">{category.icon}</div>
-                <h3>{category.name}</h3>
+                <div className="text-5xl mb-2.5">{category.icon}</div>
+                <h3 className="text-gray-800 text-lg">{category.name}</h3>
               </Link>
             ))}
           </div>
@@ -74,32 +73,32 @@ const Home = () => {
       </section>
 
       {/* Featured Products */}
-      <section className="featured-products">
+      <section className="py-16 bg-gray-100">
         <div className="container">
-          <h2>Featured Products</h2>
+          <h2 className="text-center text-4xl mb-10 text-gray-800">Featured Products</h2>
           {loading ? (
             <div className="loading">Loading products...</div>
           ) : products && products.length > 0 ? (
-            <div className="products-grid">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
               {products.map((product) => (
                 <Link
                   key={product._id}
                   to={`/products/${product._id}`}
-                  className="product-card"
+                  className="bg-white rounded-xl overflow-hidden transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-xl"
                 >
-                  <div className="product-image">
+                  <div className="w-full h-48 overflow-hidden bg-gray-100 relative">
                     {product.stock === 0 && (
-                      <div className="out-of-stock-banner">Out of Stock</div>
+                      <div className="absolute top-2.5 right-2.5 bg-red-500/95 text-white px-4 py-2 rounded-full text-xs font-semibold z-10 shadow-md">Out of Stock</div>
                     )}
-                    <img src={product.image} alt={product.name} />
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                   </div>
-                  <div className="product-info">
-                    <h3>{product.name}</h3>
-                    <p className="product-category">{product.category}</p>
-                    <div className="product-price">
-                      <span className="price">${product.price}</span>
+                  <div className="p-5">
+                    <h3 className="text-lg mb-2 text-gray-800">{product.name}</h3>
+                    <p className="text-gray-600 text-sm mb-3">{product.category}</p>
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-xl font-bold text-[#667eea]">${product.price}</span>
                       {product.originalPrice && (
-                        <span className="original-price">${product.originalPrice}</span>
+                        <span className="text-base text-gray-400 line-through">${product.originalPrice}</span>
                       )}
                     </div>
                   </div>
@@ -107,11 +106,11 @@ const Home = () => {
               ))}
             </div>
           ) : (
-            <div className="no-products">
+            <div className="text-center py-10">
               <p>No featured products available at the moment.</p>
             </div>
           )}
-          <div className="view-all">
+          <div className="text-center">
             <Link to="/products" className="btn btn-primary">
               View All Products
             </Link>
@@ -120,29 +119,29 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="features">
+      <section className="py-16 bg-white">
         <div className="container">
-          <h2>Why Choose FreshMart?</h2>
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🚚</div>
-              <h3>Fast Delivery</h3>
-              <p>Get your groceries delivered in under 30 minutes</p>
+          <h2 className="text-center text-4xl mb-10 text-gray-800">Why Choose FreshMart?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center p-8">
+              <div className="text-6xl mb-5">🚚</div>
+              <h3 className="text-xl mb-3 text-gray-800">Fast Delivery</h3>
+              <p className="text-gray-600 leading-relaxed">Get your groceries delivered in under 30 minutes</p>
             </div>
-            <div className="feature-card">
-              <div className="feature-icon">✨</div>
-              <h3>Fresh Quality</h3>
-              <p>Only the freshest products from trusted suppliers</p>
+            <div className="text-center p-8">
+              <div className="text-6xl mb-5">✨</div>
+              <h3 className="text-xl mb-3 text-gray-800">Fresh Quality</h3>
+              <p className="text-gray-600 leading-relaxed">Only the freshest products from trusted suppliers</p>
             </div>
-            <div className="feature-card">
-              <div className="feature-icon">💰</div>
-              <h3>Best Prices</h3>
-              <p>Competitive prices with regular deals and discounts</p>
+            <div className="text-center p-8">
+              <div className="text-6xl mb-5">💰</div>
+              <h3 className="text-xl mb-3 text-gray-800">Best Prices</h3>
+              <p className="text-gray-600 leading-relaxed">Competitive prices with regular deals and discounts</p>
             </div>
-            <div className="feature-card">
-              <div className="feature-icon">🛡️</div>
-              <h3>Secure Shopping</h3>
-              <p>Safe and secure payment options for your peace of mind</p>
+            <div className="text-center p-8">
+              <div className="text-6xl mb-5">🛡️</div>
+              <h3 className="text-xl mb-3 text-gray-800">Secure Shopping</h3>
+              <p className="text-gray-600 leading-relaxed">Safe and secure payment options for your peace of mind</p>
             </div>
           </div>
         </div>

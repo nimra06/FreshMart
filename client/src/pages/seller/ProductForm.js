@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../config/axios';
 import { useToast } from '../../context/ToastContext';
-import './Seller.css';
-import './ProductForm.css';
 
 const ProductForm = () => {
   const { id } = useParams();

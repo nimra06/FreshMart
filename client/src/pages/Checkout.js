@@ -9,7 +9,6 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
-import './Checkout.css';
 
 const CheckoutForm = ({ clientSecret, setClientSecret }) => {
   const { cart, getCartTotal, clearCart, user } = useApp();

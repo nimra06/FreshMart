@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import './Toast.css';
 
 const ToastContext = createContext();
 
@@ -57,7 +56,7 @@ export const ToastProvider = ({ children }) => {
 
 const ToastContainer = ({ toasts, removeToast }) => {
   return (
-    <div className="toast-container">
+    <div className="fixed top-5 right-5 z-[10000] flex flex-col gap-3 pointer-events-none md:left-auto left-5">
       {toasts.map((toast) => (
         <Toast key={toast.id} toast={toast} removeToast={removeToast} />
       ))}
@@ -79,15 +78,28 @@ const Toast = ({ toast, removeToast }) => {
     }
   };
 
+  const getBorderColor = () => {
+    switch (toast.type) {
+      case 'success':
+        return 'border-l-green-500';
+      case 'error':
+        return 'border-l-red-500';
+      case 'warning':
+        return 'border-l-yellow-500';
+      default:
+        return 'border-l-blue-500';
+    }
+  };
+
   return (
     <div
-      className={`toast toast-${toast.type}`}
+      className={`flex items-center gap-3 px-5 py-4 bg-white rounded-lg shadow-lg min-w-[300px] max-w-[400px] md:max-w-[400px] max-w-full pointer-events-auto cursor-pointer animate-[slideIn_0.3s_ease-out] border-l-4 ${getBorderColor()} transition-all duration-200 hover:-translate-x-1`}
       onClick={() => removeToast(toast.id)}
     >
-      <span className="toast-icon">{getIcon()}</span>
-      <span className="toast-message">{toast.message}</span>
+      <span className="text-xl flex-shrink-0">{getIcon()}</span>
+      <span className="flex-1 text-sm text-gray-800 leading-snug">{toast.message}</span>
       <button
-        className="toast-close"
+        className="bg-none border-none text-2xl text-gray-400 cursor-pointer p-0 w-6 h-6 flex items-center justify-center flex-shrink-0 transition-colors duration-200 hover:text-gray-800"
         onClick={(e) => {
           e.stopPropagation();
           removeToast(toast.id);
@@ -98,6 +110,7 @@ const Toast = ({ toast, removeToast }) => {
     </div>
   );
 };
+
 
 
 

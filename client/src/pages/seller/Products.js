@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
 import { useToast } from '../../context/ToastContext';
-import './Seller.css';
 
 const SellerProducts = () => {
   const [products, setProducts] = useState([]);

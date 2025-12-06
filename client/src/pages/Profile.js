@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import api from '../config/axios';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../context/ToastContext';
-import './Profile.css';
 
 const Profile = () => {
   const { user, loadUser } = useApp();
@@ -70,12 +69,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-page">
+    <div className="py-10 min-h-screen">
       <div className="container">
-        <h1>My Profile</h1>
-        <div className="profile-content">
-          <div className="profile-card">
-            <h2>Personal Information</h2>
+        <h1 className="text-4xl mb-8 text-gray-800">My Profile</h1>
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8">
+          <div className="bg-white rounded-xl p-8 shadow-md">
+            <h2 className="text-2xl mb-5 text-gray-800">Personal Information</h2>
             {message && (
               <div className={message.includes('success') ? 'success' : 'error'}>
                 {message}
@@ -117,7 +116,7 @@ const Profile = () => {
                 />
               </div>
 
-              <h3>Address</h3>
+              <h3 className="text-xl mb-5 text-gray-800">Address</h3>
 
               <div className="form-group">
                 <label>Street Address</label>
@@ -130,7 +129,7 @@ const Profile = () => {
                 />
               </div>
 
-              <div className="form-row">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="form-group">
                   <label>City</label>
                   <input
@@ -174,16 +173,16 @@ const Profile = () => {
             </form>
           </div>
 
-          <div className="profile-info">
-            <h2>Account Information</h2>
-            <div className="info-item">
-              <strong>Account Type:</strong>
-              <span className={`badge ${user?.role === 'seller' ? 'seller' : 'client'}`}>
+          <div className="bg-white rounded-xl p-8 shadow-md h-fit">
+            <h2 className="text-2xl mb-5 text-gray-800">Account Information</h2>
+            <div className="mb-5">
+              <strong className="block mb-2 text-gray-800">Account Type:</strong>
+              <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${user?.role === 'seller' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}`}>
                 {user?.role === 'seller' ? 'Seller' : 'Customer'}
               </span>
             </div>
             {user?.role === 'seller' && (
-              <a href="/seller/dashboard" className="btn btn-primary">
+              <a href="/seller/dashboard" className="btn btn-primary w-full">
                 Go to Seller Dashboard
               </a>
             )}
